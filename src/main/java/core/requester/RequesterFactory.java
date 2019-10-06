@@ -1,6 +1,5 @@
 package core.requester;
 
-import core.config.Configurable;
 import core.config.Configuration;
 
 public class RequesterFactory {

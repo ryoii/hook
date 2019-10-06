@@ -18,18 +18,18 @@ import java.util.concurrent.CountDownLatch;
 public abstract class BaseCrawler implements Configurable {
 
     final private Configuration configuration;
-    protected Scheduler scheduler;
-    protected Requester requester;
-    protected Pipeline pipeline;
+    private Scheduler scheduler;
+    private Requester requester;
+    private Pipeline pipeline;
 
-    protected CountDownLatch latch;
-    protected TaskList seed = new TaskList();
+    private CountDownLatch latch;
+    private TaskList seed = new TaskList();
 
     public BaseCrawler() {
         this(Configuration.defaultConfiguration());
     }
 
-    public BaseCrawler(Configuration configuration) {
+    private BaseCrawler(Configuration configuration) {
         this.configuration = configuration;
     }
 

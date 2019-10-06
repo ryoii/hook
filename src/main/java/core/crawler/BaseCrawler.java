@@ -120,6 +120,9 @@ public abstract class BaseCrawler implements Configurable {
                             scheduler.countDown();
                             // TODO: logger: give up
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        scheduler.countDown();
                     }
                 }
             } finally {

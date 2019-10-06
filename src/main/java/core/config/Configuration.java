@@ -14,6 +14,7 @@ public class Configuration {
     /* Crawler
     */
     private int threadNum;
+    private boolean autoDetectImg;
 
     public int getThreadNum() {
         return threadNum;
@@ -21,6 +22,15 @@ public class Configuration {
 
     public Configuration setThreadNum(int threadNum) {
         this.threadNum = threadNum;
+        return this;
+    }
+
+    public boolean isAutoDetectImg() {
+        return autoDetectImg;
+    }
+
+    public Configuration setAutoDetectImg(boolean autoDetectImg) {
+        this.autoDetectImg = autoDetectImg;
         return this;
     }
 
@@ -126,6 +136,7 @@ public class Configuration {
         configuration.connectTimeout = 30000;
         configuration.filterName = FilterFactory.Filters.HASH_FILTER;
         configuration.taskDefaultLife = 5;
+        configuration.autoDetectImg = false;
         return configuration;
     }
 }

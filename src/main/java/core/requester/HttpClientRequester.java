@@ -2,7 +2,6 @@ package core.requester;
 
 import core.config.Configurable;
 import core.config.Configuration;
-import core.crawler.BaseCrawler;
 import core.model.Page;
 import core.model.Task;
 
@@ -12,6 +11,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.List;
 
 public class HttpClientRequester implements Requester, Configurable {
 
@@ -34,8 +34,9 @@ public class HttpClientRequester implements Requester, Configurable {
                 .header("user-agent", configuration.getUserAgent())
                 .headers(configuration.getHeaders().toArray(new String[]{}))
                 .GET().build();
-        byte[] content = client.send(request, HttpResponse.BodyHandlers.ofByteArray()).body();
-        return new Page(task, content);
+        HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+        String contentType = response.headers().firstValue("content-type").orElse("");
+        return new Page(task, response.body(), contentType);
     }
 
     @Override

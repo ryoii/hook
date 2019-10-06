@@ -79,7 +79,7 @@ public abstract class BaseCrawler implements Configurable {
 
     public abstract void visit(Page page, AddOnlyTaskList tasks);
 
-    protected void afterVisit(Page page, Pipeline pipeline){}
+    protected void afterVisit(Page page, AddOnlyTaskList taskList){}
 
     @Override
     public Configuration getConfiguration() {
@@ -107,10 +107,10 @@ public abstract class BaseCrawler implements Configurable {
                         Page page = requester.getPage(task);
                         TaskList taskList = new TaskList();
                         visit(page, taskList);
+                        afterVisit(page, taskList);
                         taskList.forEach(t -> t.setLife(taskLife));
                         scheduler.addTasks(taskList);
                         scheduler.countDown();
-                        afterVisit(page, pipeline);
                     } catch (InterruptedException | IOException e) {
                         // TODO: logger: exception
                         if (task == null) continue;

@@ -19,7 +19,7 @@ public abstract class BaseCrawler implements Configurable {
 
     final private Configuration configuration;
     private Scheduler scheduler;
-    private Requester requester;
+    private RequesterFactory requesterFactory;
     private Pipeline pipeline;
 
     private CountDownLatch latch;
@@ -29,12 +29,12 @@ public abstract class BaseCrawler implements Configurable {
         this(Configuration.defaultConfiguration());
     }
 
-    private BaseCrawler(Configuration configuration) {
+    public BaseCrawler(Configuration configuration) {
         this.configuration = configuration;
     }
 
     private void init() {
-        requester = RequesterFactory.of(configuration.getRequesterType(), configuration);
+        requesterFactory = RequesterFactory.of(configuration.getRequesterType(), configuration);
         scheduler = new DefaultScheduler(configuration);
         scheduler.addTasks(seed);
     }
@@ -95,6 +95,7 @@ public abstract class BaseCrawler implements Configurable {
         @Override
         public void run() {
             int taskLife = configuration.getTaskDefaultLife();
+            Requester requester = requesterFactory.getInstance();
 
             try {
                 while (scheduler.isAlive()) {

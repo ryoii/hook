@@ -35,18 +35,18 @@ public class Configuration {
     /*
     /* Requester
     */
-    private RequesterFactory.RequesterType requesterType;
+    private RequesterFactory.RequesterFactoryType requesterType;
     private String userAgent = "";
     private String cookie = "";
     private List<String> headers = new ArrayList<>();
     private long timeout;
     private long connectTimeout;
 
-    public RequesterFactory.RequesterType getRequesterType() {
+    public RequesterFactory.RequesterFactoryType getRequesterType() {
         return requesterType;
     }
 
-    public Configuration setRequesterType(RequesterFactory.RequesterType requesterType) {
+    public Configuration setRequesterType(RequesterFactory.RequesterFactoryType requesterType) {
         this.requesterType = requesterType;
         return this;
     }
@@ -128,7 +128,7 @@ public class Configuration {
     public static Configuration defaultConfiguration() {
         Configuration configuration = new Configuration();
         configuration.threadNum = 50;
-        configuration.requesterType = RequesterFactory.RequesterType.HTTPCLIENT_REQUESTER;
+        configuration.requesterType = RequesterFactory.RequesterFactoryType.HTTPCLIENT_REQUESTER;
         configuration.addHeader("powerBy", "hook");
         configuration.timeout = 30000;
         configuration.connectTimeout = 30000;

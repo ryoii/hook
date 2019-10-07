@@ -2,22 +2,24 @@ package core.requester;
 
 import core.config.Configuration;
 
-public class RequesterFactory {
+public interface RequesterFactory {
 
-    public static Requester of(RequesterType requesterType, Configuration configuration) {
-        Requester requester;
+    Requester getInstance();
+
+    static RequesterFactory of(RequesterFactoryType requesterType, Configuration configuration) {
+        RequesterFactory factory;
         switch (requesterType) {
             case HTTPCLIENT_REQUESTER:
-                requester = new HttpClientRequester(configuration);
+                factory = new HttpClientRequesterFactory(configuration);
                 break;
             default:
-                requester = new HttpClientRequester(configuration);
+                factory = new HttpClientRequesterFactory(configuration);
                 break;
         }
-        return requester;
+        return factory;
     }
 
-    public enum RequesterType {
+    enum RequesterFactoryType {
         HTTPCLIENT_REQUESTER
     }
 }

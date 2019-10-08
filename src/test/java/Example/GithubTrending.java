@@ -11,7 +11,7 @@ public class GithubTrending extends AutoDetectCrawler {
 
     public static void main(String[] args) {
         GithubTrending crawler = new GithubTrending();
-        crawler.getConfiguration().setThreadNum(10)
+        crawler.conf().setThreadNum(10)
                 .setConnectTimeout(1000)
                 .setTimeout(1000);
         crawler.addSeed(baseUrl).type("trending").setLife(5);

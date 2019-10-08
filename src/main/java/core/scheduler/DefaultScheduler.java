@@ -73,7 +73,7 @@ public class DefaultScheduler implements Scheduler, Configurable {
     }
 
     @Override
-    public Configuration getConfiguration() {
+    public Configuration conf() {
         return configuration;
     }
 }

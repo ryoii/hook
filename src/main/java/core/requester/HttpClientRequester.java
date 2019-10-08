@@ -41,7 +41,7 @@ public class HttpClientRequester implements Requester, Configurable {
     }
 
     @Override
-    public Configuration getConfiguration() {
+    public Configuration conf() {
         return configuration;
     }
 }

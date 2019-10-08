@@ -24,7 +24,7 @@ public abstract class AutoDetectCrawler extends BaseCrawler{
                 }
             }
 
-            if (getConfiguration().isAutoDetectImg()) {
+            if (conf().isAutoDetectImg()) {
                 List<String> src = document.select("*[src]").eachAttr("abs:src");
                 for (String url : src) {
                     String type = regexRules.checkAndGetType(url);
@@ -45,6 +45,6 @@ public abstract class AutoDetectCrawler extends BaseCrawler{
     }
 
     public void setAutoDetectImg(boolean autoDetectImg) {
-        getConfiguration().setAutoDetectImg(autoDetectImg);
+        conf().setAutoDetectImg(autoDetectImg);
     }
 }

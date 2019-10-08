@@ -63,7 +63,7 @@ public abstract class BaseCrawler implements Configurable {
 
     public Task addSeed(String url, boolean force) {
         Task task = new Task(url, force);
-        task.setLife(configuration.getTaskDefaultLife());
+        task.setLife(configuration.getRetryTime());
         seed.add(task);
         return task;
     }
@@ -74,7 +74,7 @@ public abstract class BaseCrawler implements Configurable {
 
     public Task addSeed(String url, String type, boolean force) {
         Task task = new Task(url, force).type(type);
-        task.setLife(configuration.getTaskDefaultLife());
+        task.setLife(configuration.getRetryTime());
         seed.add(task);
         return task;
     }
@@ -84,7 +84,7 @@ public abstract class BaseCrawler implements Configurable {
     protected void afterVisit(Page page, AddOnlyTaskList taskList){}
 
     @Override
-    public Configuration getConfiguration() {
+    public Configuration conf() {
         return this.configuration;
     }
 
@@ -96,7 +96,8 @@ public abstract class BaseCrawler implements Configurable {
 
         @Override
         public void run() {
-            int taskLife = configuration.getTaskDefaultLife();
+            int taskLife = configuration.getRetryTime();
+            long restTime = configuration.getRestTime();
             Requester requester = requesterFactory.getInstance();
 
             try {
@@ -126,6 +127,14 @@ public abstract class BaseCrawler implements Configurable {
                     } catch (Exception e) {
                         e.printStackTrace();
                         scheduler.countDown();
+                    }
+
+                    if (restTime > 0) {
+                        try {
+                            Thread.sleep(restTime);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } finally {

@@ -27,7 +27,7 @@ public class HashFilter implements Filter, Configurable {
     }
 
     @Override
-    public Configuration getConfiguration() {
+    public Configuration conf() {
         return this.configuration;
     }
 }

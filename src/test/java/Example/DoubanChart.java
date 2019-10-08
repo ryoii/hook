@@ -12,7 +12,7 @@ public class DoubanChart extends BaseCrawler {
     public static void main(String[] args) {
         DoubanChart crawler = new DoubanChart();
         crawler.addSeed(baseUrl, "chart").setLife(5);
-        crawler.getConfiguration().setThreadNum(5);
+        crawler.conf().setThreadNum(5);
         crawler.start();
     }
 

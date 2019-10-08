@@ -14,6 +14,7 @@ public class Configuration {
     */
     private int threadNum;
     private boolean autoDetectImg;
+    private long restTime;
 
     public int getThreadNum() {
         return threadNum;
@@ -33,9 +34,18 @@ public class Configuration {
         return this;
     }
 
+    public long getRestTime() {
+        return restTime;
+    }
+
+    public Configuration setRestTime(long restTime) {
+        this.restTime = restTime;
+        return this;
+    }
+
     /*
-    /* Requester
-    */
+        /* Requester
+        */
     private RequesterFactory.RequesterFactoryType requesterType;
     private String userAgent = "";
     private String cookie = "";
@@ -120,14 +130,14 @@ public class Configuration {
     /*
     /* Task
     */
-    private int taskDefaultLife;
+    private int retryTime;
 
-    public int getTaskDefaultLife() {
-        return taskDefaultLife;
+    public int getRetryTime() {
+        return retryTime;
     }
 
-    public Configuration setTaskDefaultLife(int taskDefaultLife) {
-        this.taskDefaultLife = taskDefaultLife;
+    public Configuration setRetryTime(int retryTime) {
+        this.retryTime = retryTime;
         return this;
     }
 
@@ -140,8 +150,9 @@ public class Configuration {
         configuration.connectTimeout = 30000;
         configuration.proxies = new Proxies();
         configuration.filterName = FilterFactory.Filters.HASH_FILTER;
-        configuration.taskDefaultLife = 5;
+        configuration.retryTime = 5;
         configuration.autoDetectImg = false;
+        configuration.restTime = 0;
         return configuration;
     }
 }

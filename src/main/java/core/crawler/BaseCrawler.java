@@ -63,6 +63,7 @@ public abstract class BaseCrawler implements Configurable {
 
     public Task addSeed(String url, boolean force) {
         Task task = new Task(url, force);
+        task.setLife(configuration.getTaskDefaultLife());
         seed.add(task);
         return task;
     }
@@ -73,6 +74,7 @@ public abstract class BaseCrawler implements Configurable {
 
     public Task addSeed(String url, String type, boolean force) {
         Task task = new Task(url, force).type(type);
+        task.setLife(configuration.getTaskDefaultLife());
         seed.add(task);
         return task;
     }

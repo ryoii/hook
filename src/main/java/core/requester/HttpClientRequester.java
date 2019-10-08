@@ -4,6 +4,7 @@ import core.config.Configurable;
 import core.config.Configuration;
 import core.model.Page;
 import core.model.Task;
+import core.proxy.RandomProxySelector;
 
 import java.io.IOException;
 import java.net.URI;
@@ -20,6 +21,7 @@ public class HttpClientRequester implements Requester, Configurable {
     HttpClientRequester(Configuration configuration) {
         this.configuration = configuration;
         client = HttpClient.newBuilder()
+                .proxy(new RandomProxySelector(configuration.getProxies()))
                 .connectTimeout(Duration.ofMillis(configuration.getConnectTimeout()))
                 .build();
     }

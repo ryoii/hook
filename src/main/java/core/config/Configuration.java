@@ -1,6 +1,7 @@
 package core.config;
 
 import core.filter.FilterFactory;
+import core.proxy.Proxies;
 import core.requester.RequesterFactory;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class Configuration {
     private List<String> headers = new ArrayList<>();
     private long timeout;
     private long connectTimeout;
+    private Proxies proxies;
 
     public RequesterFactory.RequesterFactoryType getRequesterType() {
         return requesterType;
@@ -97,9 +99,13 @@ public class Configuration {
         return this;
     }
 
+    public Proxies getProxies() {
+        return proxies;
+    }
+
     /*
-    /* Filter
-    */
+        /* Filter
+        */
     private FilterFactory.Filters filterName;
 
     public FilterFactory.Filters getFilterName() {
@@ -132,6 +138,7 @@ public class Configuration {
         configuration.addHeader("powerBy", "hook");
         configuration.timeout = 30000;
         configuration.connectTimeout = 30000;
+        configuration.proxies = new Proxies();
         configuration.filterName = FilterFactory.Filters.HASH_FILTER;
         configuration.taskDefaultLife = 5;
         configuration.autoDetectImg = false;

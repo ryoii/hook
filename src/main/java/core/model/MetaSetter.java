@@ -1,8 +1,12 @@
 package core.model;
 
+import java.util.Map;
+
 public interface MetaSetter<T> {
 
     T meta(String key, String value);
+
+    T meta(Map<String, String> meta);
 
     default T meta(String key, Number number) {
         return meta(key, String.valueOf(number));

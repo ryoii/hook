@@ -1,6 +1,7 @@
 package core.model;
 
 import java.util.Iterator;
+import java.util.Map;
 
 public class TaskList extends AddOnlyTaskList
         implements Iterable<Task>, MetaSetter<TaskList>{
@@ -27,6 +28,12 @@ public class TaskList extends AddOnlyTaskList
     @Override
     public TaskList meta(String key, String value) {
         data.forEach(data -> data.meta(key, value));
+        return this;
+    }
+
+    @Override
+    public TaskList meta(Map<String, String> meta) {
+        data.forEach(data -> data.meta(meta));
         return this;
     }
 

@@ -1,6 +1,7 @@
 package core.model;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Task implements MetaGetter, MetaSetter<Task> {
 
@@ -56,6 +57,12 @@ public class Task implements MetaGetter, MetaSetter<Task> {
     @Override
     public Task meta(String key, String value) {
         metaMap.put(key, value);
+        return this;
+    }
+
+    @Override
+    public Task meta(Map<String, String> meta) {
+        metaMap.putAll(meta);
         return this;
     }
 }

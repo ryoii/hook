@@ -9,7 +9,8 @@ public class Links implements Iterable<String> {
 
     private List<String> data = new ArrayList<>();
 
-    Links() {}
+    Links() {
+    }
 
     Links(Collection<String> urls) {
         data.addAll(urls);

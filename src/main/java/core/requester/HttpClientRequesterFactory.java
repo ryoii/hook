@@ -4,7 +4,7 @@ import core.config.Configuration;
 
 import java.net.http.HttpClient;
 
-public class HttpClientRequesterFactory implements RequesterFactory{
+public class HttpClientRequesterFactory implements RequesterFactory {
 
     private volatile Requester instance;
     private Configuration configuration;

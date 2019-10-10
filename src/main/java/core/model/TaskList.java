@@ -4,9 +4,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class TaskList extends AddOnlyTaskList
-        implements Iterable<Task>, MetaSetter<TaskList>{
+        implements Iterable<Task>, MetaSetter<TaskList> {
 
-    public TaskList() {}
+    public TaskList() {
+    }
 
     public TaskList(Iterable<String> urls) {
         super(urls);

@@ -8,7 +8,8 @@ public class RegexRules {
     private List<RuleEntry> whiteName = new ArrayList<>();
     private List<RuleEntry> blackName = new ArrayList<>();
 
-    public RegexRules() {}
+    public RegexRules() {
+    }
 
     public void addRule(String rule) {
         addRule(rule, null);
@@ -52,6 +53,7 @@ public class RegexRules {
             this.rule = rule;
             this.type = type;
         }
+
         String rule;
         String type;
     }

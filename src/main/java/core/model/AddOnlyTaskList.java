@@ -8,7 +8,8 @@ public class AddOnlyTaskList {
 
     List<Task> data = new LinkedList<>();
 
-    AddOnlyTaskList() { }
+    AddOnlyTaskList() {
+    }
 
     AddOnlyTaskList(Iterable<String> urls) {
         add(urls);

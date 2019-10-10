@@ -81,7 +81,8 @@ public abstract class BaseCrawler implements Configurable {
 
     public abstract void visit(Page page, AddOnlyTaskList tasks);
 
-    protected void afterVisit(Page page, AddOnlyTaskList taskList){}
+    protected void afterVisit(Page page, AddOnlyTaskList taskList) {
+    }
 
     @Override
     public Configuration conf() {

@@ -8,7 +8,7 @@ import org.jsoup.nodes.Document;
 import java.nio.charset.Charset;
 import java.util.Optional;
 
-public class Page extends DocumentParser implements MetaGetter{
+public class Page extends DocumentParser implements MetaGetter {
 
     private Task task;
     private byte[] content;
@@ -17,7 +17,7 @@ public class Page extends DocumentParser implements MetaGetter{
     private String html = null;
     private Document document = null;
 
-    public Page (Task task, byte[] content, String contentType) {
+    public Page(Task task, byte[] content, String contentType) {
         this.task = task;
         this.content = content;
         this.contentType = contentType;

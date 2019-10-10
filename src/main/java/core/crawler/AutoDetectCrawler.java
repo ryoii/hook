@@ -8,7 +8,7 @@ import org.jsoup.nodes.Document;
 
 import java.util.List;
 
-public abstract class AutoDetectCrawler extends BaseCrawler{
+public abstract class AutoDetectCrawler extends BaseCrawler {
 
     private RegexRules regexRules = new RegexRules();
 

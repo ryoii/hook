@@ -15,9 +15,9 @@ public class RegexCharsetDetector {
         Charset charset;
         if (matcher.find()) {
             charset = Charset.forName(matcher.group(1));
-    } else {
-        charset = null;
-    }
+        } else {
+            charset = null;
+        }
         return charset;
     }
 }

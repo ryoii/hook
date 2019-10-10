@@ -1,5 +1,3 @@
-package Example;
-
 import core.crawler.Hook;
 import core.model.Links;
 

@@ -1,5 +1,3 @@
-package Example;
-
 import core.crawler.AutoDetectCrawler;
 import core.model.AddOnlyTaskList;
 import core.model.Links;

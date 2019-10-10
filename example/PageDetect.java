@@ -1,0 +1,15 @@
+import core.crawler.Hook;
+
+public class PageDetect {
+
+    public static void main(String[] args) {
+        Hook.newHook().retryTime(5).restTime(1000)
+                .addSeed("https://github.com/ryoii?tab=repositories", "profile")
+                .select("profile", "a[itemprop=name codeRepository]").type("repo")
+                .visitHandler(((page, taskList) -> {
+                    if (page.typeMatch("repo")) {
+                        System.out.println(page.url());
+                    }
+                })).start(5);
+    }
+}

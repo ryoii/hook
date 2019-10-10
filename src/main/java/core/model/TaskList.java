@@ -16,6 +16,14 @@ public class TaskList extends AddOnlyTaskList
         return this;
     }
 
+    public Task get(int index) {
+        return data.get(index);
+    }
+
+    public int size() {
+        return data.size();
+    }
+
     @Override
     public TaskList meta(String key, String value) {
         data.forEach(data -> data.meta(key, value));

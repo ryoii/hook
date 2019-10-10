@@ -1,30 +1,30 @@
 # hook
-A **declarative** Java crawler framework that can perform data crawling with only a few lines of code. At the same time, it has high scalability and can be customized to fully customized crawler programs.
+一个**声明式**的Java爬虫框架，可以仅用寥寥数行代码完成数据爬取功能。同时具有很高的扩展性，可以定制完全客制化的爬虫程序。
 
-**English | [中文文档](https://github.com/darkcloth/hook/blob/master/README_zh.md)**
+**[English](https://github.com/darkcloth/hook/blob/master/README.md) | 中文文档**
 
-## Advantages
+## 优点
 
-1. Declarative programming, smooth development experience, less code
-2. Support regular expression matching, high applicability
-3. Support meta data annotation to simplify crawler logic
-4. Modular configuration to customize fully customized modules
-5. Automatically detect hyperlinks and image links to reduce unnecessary code
-6. Based on Java 11, promoting the new version, everyone is responsible
+1. 声明式编程，流畅的开发体验，代码量少
+2. 支持正则匹配，适用性高
+3. 支持元数据标注，简化爬虫逻辑
+4. 组件化配置，可定制完全客制化的模块
+5. 对超链接、图片链接自动解析，减少不必要的代码
+6. 基于Java 11编写，推动新版本，人人有责
 
-## Download
+## 开始
 
-### With Maven
+### 通过Maven
 
-> Haven't uploaded to Maven yet
+> 还没有上传Maven
 
-### Without Maven
+### 不通过Maven
 
-> Download the jar package and have your fun based on the examples
+> 下载jar包并根据例程开始你的表演
 
-## Quick start
+## 快速开始
 
-### Experience declarative crawlers
+### 体验声明式爬虫
 
 ```java
 class Example {
@@ -37,7 +37,7 @@ class Example {
     }
 }
 
-// Duplicate URLs will be filtered
+// 重复的URL会被过滤
 class Example {
     public static void main(String[] args) {
         Hook.newHook().retryTime(5).restTime(1000)
@@ -52,7 +52,7 @@ class Example {
     }
 }
 
-// You can force URLs to be unfiltered, which is useful for crawling APIs.
+// 可以强制要求URL不被过滤，这对爬取重复变化的API时十分有用
 class Example {
     public static void main(String[] args) {
         Hook.newHook().retryTime(5).restTime(1000)
@@ -68,9 +68,9 @@ class Example {
 }
 ```
 
-### Experience automatic detection of URLs
+### 体验自动检测URL
 
-Automatically detect all the repositories under the github account by URL regular expression matching
+通过URL正则匹配自动检测获取github账户下的所有仓库
 
 ```java
 class Example {
@@ -88,11 +88,11 @@ class Example {
 }
 ```
 
-### Advanced customized crawler
+### 高级定制爬虫
 
-Implement the crawler by extend `BaseCrawler` or `AutoDetectCrawler` and overriding the `visit()` method.
+通过继承`BaseCrawler`类或者`AutoDetectCrawler`类并重写`visit()`方法来实现爬虫功能
 
-Here's how to implement a crawler that fetching the github trend list.
+下面展示了如何实现爬取github趋势列表的爬虫程序
 
 ```java
 import core.crawler.AutoDetectCrawler;
@@ -134,22 +134,22 @@ public class GithubTrending extends AutoDetectCrawler {
 
 ```
 
-## More examples
+## 更多例程
 
-[more examples](https://github.com/ryoii/hook/tree/master/examples)
+[更多例程](https://github.com/ryoii/hook/tree/master/examples)
 
-## Todo list
+## 展望
 
-- [x] auto detect crawler
-- [x] proxy pool
-- [ ] plugins
-- [ ] better regex express
-- [ ] parse and run java script
-- [ ] distributed crawler
-- [ ] more filter
-- [ ] convenient persistent tools
++ [x] 自动解析爬虫
++ [x] 代理池
++ [ ] 完全实现插件化
++ [ ] 更好的正则表达式
++ [ ] 运行JS解析动态页面
++ [ ] 分布式爬虫
++ [ ] 更多的过滤器
++ [ ] 开箱即用的持久化工具
 
-## Thanks
+## 感谢项目
 
-[jsoup](https://github.com/jhy/jsoup): Java HTML Parser, with best of DOM, CSS, and jquery [website](https://jsoup.org/)
+[jsoup](https://github.com/jhy/jsoup): Java HTML解析器 [官网](https://jsoup.org/)
 

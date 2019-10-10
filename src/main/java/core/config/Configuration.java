@@ -13,6 +13,7 @@ public class Configuration {
     /* Crawler
     */
     private int threadNum;
+    private boolean autoDetect;
     private boolean autoDetectImg;
     private long restTime;
 
@@ -22,6 +23,15 @@ public class Configuration {
 
     public Configuration setThreadNum(int threadNum) {
         this.threadNum = threadNum;
+        return this;
+    }
+
+    public boolean isAutoDetect() {
+        return autoDetect;
+    }
+
+    public Configuration setAutoDetect(boolean autoDetect) {
+        this.autoDetectImg = autoDetect;
         return this;
     }
 
@@ -151,6 +161,7 @@ public class Configuration {
         configuration.proxies = new Proxies();
         configuration.filterName = FilterFactory.Filters.HASH_FILTER;
         configuration.retryTime = 5;
+        configuration.autoDetect = false;
         configuration.autoDetectImg = false;
         configuration.restTime = 0;
         return configuration;

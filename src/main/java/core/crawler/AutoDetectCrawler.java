@@ -14,6 +14,8 @@ public abstract class AutoDetectCrawler extends BaseCrawler{
 
     @Override
     protected final void afterVisit(Page page, AddOnlyTaskList taskList) {
+        if (!conf().isAutoDetect()) return;
+
         if (page.isHtml()) {
             Document document = page.getDocument();
             List<String> href = document.select("a[href]").eachAttr("abs:href");

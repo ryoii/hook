@@ -31,7 +31,7 @@ public class Configuration {
     }
 
     public Configuration setAutoDetect(boolean autoDetect) {
-        this.autoDetectImg = autoDetect;
+        this.autoDetect = autoDetect;
         return this;
     }
 

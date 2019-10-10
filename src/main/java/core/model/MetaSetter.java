@@ -1,6 +1,6 @@
 package core.model;
 
-interface MetaSetter<T> {
+public interface MetaSetter<T> {
 
     T meta(String key, String value);
 

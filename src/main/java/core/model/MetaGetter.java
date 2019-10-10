@@ -1,6 +1,6 @@
 package core.model;
 
-interface MetaGetter {
+public interface MetaGetter {
 
     String KEY_TYPE = "hook_type";
 

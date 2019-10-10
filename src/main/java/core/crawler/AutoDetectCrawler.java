@@ -49,4 +49,8 @@ public abstract class AutoDetectCrawler extends BaseCrawler {
     public void setAutoDetectImg(boolean autoDetectImg) {
         conf().setAutoDetectImg(autoDetectImg);
     }
+
+    public void setRegexRules(RegexRules regexRules) {
+        this.regexRules = regexRules;
+    }
 }

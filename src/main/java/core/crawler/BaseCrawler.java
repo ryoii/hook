@@ -17,7 +17,7 @@ import java.util.concurrent.CountDownLatch;
 
 public abstract class BaseCrawler implements Configurable {
 
-    final private Configuration configuration;
+    private Configuration configuration;
     private Scheduler scheduler;
     private RequesterFactory requesterFactory;
     private Pipeline pipeline;
@@ -79,6 +79,11 @@ public abstract class BaseCrawler implements Configurable {
         return task;
     }
 
+    public BaseCrawler setSeeds(TaskList seeds) {
+        this.seed = seeds;
+        return this;
+    }
+
     public abstract void visit(Page page, AddOnlyTaskList tasks);
 
     protected void afterVisit(Page page, AddOnlyTaskList taskList) {
@@ -89,6 +94,10 @@ public abstract class BaseCrawler implements Configurable {
         return this.configuration;
     }
 
+    public BaseCrawler conf(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
 
     /**
      * CrawlerThread

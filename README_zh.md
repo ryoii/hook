@@ -1,7 +1,12 @@
 # hook
 一个**声明式**的Java爬虫框架，可以仅用寥寥数行代码完成数据爬取功能。同时具有很高的扩展性，可以定制完全客制化的爬虫程序。
 
-**[English](https://github.com/darkcloth/hook/blob/master/README.md) | 中文文档**
+<p align="center">
+<a href="#"><img alt="JDK" src="https://img.shields.io/badge/JDK-11+-yellow.svg"/></a>
+<a href="https://github.com/ryoii/hook/blob/master/LICENSE"><img alt="JDK" src="https://img.shields.io/badge/LICENSE-MIT+-lightgrey.svg"/></a>
+<p>
+
+**[English](https://github.com/ryoii/hook/blob/master/README.md) | 中文文档**
 
 ## 优点
 
@@ -136,7 +141,22 @@ public class GithubTrending extends AutoDetectCrawler {
 
 ## 更多例程
 
-[更多例程](https://github.com/ryoii/hook/tree/master/examples)
+[更多例程](https://github.com/ryoii/hook/tree/master/example)
+
+|声明式爬虫|
+|:---|
+|[体验1，爬取豆瓣热门](https://github.com/ryoii/hook/blob/master/example/DoubanChartHook.java)|
+|[体验2，爬取当前IP](https://github.com/ryoii/hook/blob/master/example/IpCrawler.java)|
+
+|自动爬虫|
+|:---|
+|[体验正则探测](https://github.com/ryoii/hook/blob/master/example/RegexExample.java)|
+|[体验Page探测](https://github.com/ryoii/hook/blob/master/example/PageDetect.java)|
+
+|进阶爬虫|
+|:---|
+|[爬取豆瓣热门](https://github.com/ryoii/hook/blob/master/example/DoubanChart.java)|
+|[爬取Github趋势](https://github.com/ryoii/hook/blob/master/example/GithubTrending.java)|
 
 ## 展望
 

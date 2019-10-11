@@ -1,7 +1,12 @@
 # hook
 A **declarative** Java crawler framework that can perform data crawling with only a few lines of code. At the same time, it has high scalability and can be customized to fully customized crawler programs.
 
-**English | [中文文档](https://github.com/darkcloth/hook/blob/master/README_zh.md)**
+<p align="center">
+<a href="#"><img alt="JDK" src="https://img.shields.io/badge/JDK-11+-yellow.svg"/></a>
+<a href="https://github.com/ryoii/hook/blob/master/LICENSE"><img alt="JDK" src="https://img.shields.io/badge/LICENSE-MIT+-lightgrey.svg"/></a>
+<p>
+
+**English | [中文文档](https://github.com/ryoii/hook/blob/master/README_zh.md)**
 
 ## Advantages
 
@@ -136,7 +141,22 @@ public class GithubTrending extends AutoDetectCrawler {
 
 ## More examples
 
-[more examples](https://github.com/ryoii/hook/tree/master/examples)
+[more examples](https://github.com/ryoii/hook/tree/master/example)
+
+|declarative crawler|
+|:---|
+|[fetch douban](https://github.com/ryoii/hook/blob/master/example/DoubanChartHook.java)|
+|[fetch current ip](https://github.com/ryoii/hook/blob/master/example/IpCrawler.java)|
+
+|auto detect crawler|
+|:---|
+|[auto detect rule by regex](https://github.com/ryoii/hook/blob/master/example/RegexExample.java)|
+|[auto detect page by selector](https://github.com/ryoii/hook/blob/master/example/PageDetect.java)|
+
+|Advance crawler|
+|:---|
+|[fetch douban](https://github.com/ryoii/hook/blob/master/example/DoubanChart.java)|
+|[fetch github trending](https://github.com/ryoii/hook/blob/master/example/GithubTrending.java)|
 
 ## Todo list
 

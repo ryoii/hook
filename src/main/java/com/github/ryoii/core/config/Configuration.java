@@ -16,6 +16,7 @@ public class Configuration {
     private int threadNum;
     private boolean autoDetect;
     private boolean autoDetectImg;
+    private boolean persistence;
     private long restTime;
 
     public String getName() {
@@ -51,6 +52,15 @@ public class Configuration {
 
     public Configuration setAutoDetectImg(boolean autoDetectImg) {
         this.autoDetectImg = autoDetectImg;
+        return this;
+    }
+
+    public boolean isPersistence() {
+        return persistence;
+    }
+
+    public Configuration setPersistence(boolean persistence) {
+        this.persistence = persistence;
         return this;
     }
 

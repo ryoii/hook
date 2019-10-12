@@ -134,6 +134,17 @@ public class Hook implements MetaSetter<Hook> {
     }
 
     /**
+     * Allow the crawler to continue from the last task by saving the data
+     *
+     * @param isPersistence true if allow the crawler save its data
+     * @return Hook
+     */
+    public Hook persistence(boolean isPersistence) {
+        configuration.setPersistence(isPersistence);
+        return this;
+    }
+
+    /**
      * Set each thread's sleep time after finish a task.
      *
      * @param time rest time (millisecond)

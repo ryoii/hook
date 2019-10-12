@@ -1,9 +1,10 @@
 package com.github.ryoii.core.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Task implements MetaGetter, MetaSetter<Task> {
+public class Task implements MetaGetter, MetaSetter<Task>, Serializable {
 
     private String url;
     private boolean force;

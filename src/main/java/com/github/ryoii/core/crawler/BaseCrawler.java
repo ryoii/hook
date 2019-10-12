@@ -40,6 +40,9 @@ public abstract class BaseCrawler implements Configurable {
     private void init() {
         requesterFactory = RequesterFactory.of(configuration.getRequesterType(), configuration);
         scheduler = new DefaultScheduler(configuration);
+        if (conf().isPersistence()) {
+            scheduler.antiPersistence();
+        }
         scheduler.addTasks(seed);
     }
 
@@ -56,6 +59,7 @@ public abstract class BaseCrawler implements Configurable {
 
         try {
             latch.await();
+            scheduler.persistence();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

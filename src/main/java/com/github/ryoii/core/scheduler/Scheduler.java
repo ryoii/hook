@@ -1,8 +1,9 @@
 package com.github.ryoii.core.scheduler;
 
+import com.github.ryoii.core.model.Persistence;
 import com.github.ryoii.core.model.Task;
 
-public interface Scheduler {
+public interface Scheduler extends Persistence {
 
     Task getNextTask();
 

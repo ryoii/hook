@@ -1,5 +1,4 @@
-import core.crawler.Hook;
-import core.model.Links;
+import com.github.ryoii.core.crawler.Hook;
 
 public class DoubanChartHook {
 

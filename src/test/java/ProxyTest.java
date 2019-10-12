@@ -1,7 +1,7 @@
-import core.crawler.BaseCrawler;
-import core.model.AddOnlyTaskList;
-import core.model.Page;
-import core.proxy.Proxies;
+import com.github.ryoii.core.crawler.BaseCrawler;
+import com.github.ryoii.core.model.AddOnlyTaskList;
+import com.github.ryoii.core.model.Page;
+import com.github.ryoii.core.proxy.Proxies;
 
 public class ProxyTest extends BaseCrawler {
 

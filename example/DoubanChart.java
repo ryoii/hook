@@ -1,7 +1,7 @@
-import core.crawler.BaseCrawler;
-import core.model.AddOnlyTaskList;
-import core.model.Links;
-import core.model.Page;
+import com.github.ryoii.core.crawler.BaseCrawler;
+import com.github.ryoii.core.model.AddOnlyTaskList;
+import com.github.ryoii.core.model.Links;
+import com.github.ryoii.core.model.Page;
 
 public class DoubanChart extends BaseCrawler {
 

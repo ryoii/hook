@@ -1,4 +1,4 @@
-import core.crawler.Hook;
+import com.github.ryoii.core.crawler.Hook;
 
 public class IpCrawler {
 

@@ -1,7 +1,7 @@
-import core.crawler.AutoDetectCrawler;
-import core.model.AddOnlyTaskList;
-import core.model.Links;
-import core.model.Page;
+import com.github.ryoii.core.crawler.AutoDetectCrawler;
+import com.github.ryoii.core.model.AddOnlyTaskList;
+import com.github.ryoii.core.model.Links;
+import com.github.ryoii.core.model.Page;
 
 public class GithubTrending extends AutoDetectCrawler {
 

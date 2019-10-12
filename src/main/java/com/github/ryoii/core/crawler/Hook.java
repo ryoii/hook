@@ -17,6 +17,12 @@ public class Hook implements MetaSetter<Hook> {
         return new Hook();
     }
 
+    public static Hook newHook(String name) {
+        Hook hook = new Hook();
+        hook.configuration.setName(name);
+        return hook;
+    }
+
     /* Task */
     private TaskList seeds = new TaskList();
 
@@ -377,19 +383,17 @@ public class Hook implements MetaSetter<Hook> {
      * @param threadNum the thread num of the crawler
      */
     public void start(int threadNum) {
-        AutoDetectCrawler crawler = new AutoDetectCrawler() {
+        AutoDetectCrawler crawler = new AutoDetectCrawler(configuration) {
             @Override
             public void visit(Page page, AddOnlyTaskList tasks) {
                 visitHandler.accept(page, tasks);
             }
         };
-        configuration.setThreadNum(threadNum);
-        crawler.setSeeds(seeds).conf(configuration);
-        crawler.setRegexRules(regexRules);
+        crawler.setRegexRules(regexRules).setSeeds(seeds).conf().setThreadNum(threadNum);
         crawler.start();
     }
 
-    public class SelectRule implements MetaSetter<SelectRule> {
+    public static class SelectRule implements MetaSetter<SelectRule> {
         private Hook hook;
         private HashMap<String, String> meta;
         private String selector;

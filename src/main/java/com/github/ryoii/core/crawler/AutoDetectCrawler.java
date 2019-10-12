@@ -1,5 +1,6 @@
 package com.github.ryoii.core.crawler;
 
+import com.github.ryoii.core.config.Configuration;
 import com.github.ryoii.core.model.AddOnlyTaskList;
 import com.github.ryoii.core.model.Page;
 import com.github.ryoii.core.model.Task;
@@ -9,6 +10,14 @@ import org.jsoup.nodes.Document;
 import java.util.List;
 
 public abstract class AutoDetectCrawler extends BaseCrawler {
+
+    public AutoDetectCrawler() {
+        super();
+    }
+
+    public AutoDetectCrawler(Configuration configuration) {
+        super(configuration);
+    }
 
     private RegexRules regexRules = new RegexRules();
 
@@ -38,19 +47,23 @@ public abstract class AutoDetectCrawler extends BaseCrawler {
         }
     }
 
-    public void addRegex(String regex) {
+    public AutoDetectCrawler addRegex(String regex) {
         regexRules.addRule(regex);
+        return this;
     }
 
-    public void addRegex(String regex, String type) {
+    public AutoDetectCrawler addRegex(String regex, String type) {
         regexRules.addRule(regex, type);
+        return this;
     }
 
-    public void setAutoDetectImg(boolean autoDetectImg) {
+    public AutoDetectCrawler setAutoDetectImg(boolean autoDetectImg) {
         conf().setAutoDetectImg(autoDetectImg);
+        return this;
     }
 
-    public void setRegexRules(RegexRules regexRules) {
+    public AutoDetectCrawler setRegexRules(RegexRules regexRules) {
         this.regexRules = regexRules;
+        return this;
     }
 }

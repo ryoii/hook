@@ -12,10 +12,20 @@ public class Configuration {
     /*
     /* Crawler
     */
+    private String name;
     private int threadNum;
     private boolean autoDetect;
     private boolean autoDetectImg;
     private long restTime;
+
+    public String getName() {
+        return name;
+    }
+
+    public Configuration setName(String name) {
+        this.name = name;
+        return this;
+    }
 
     public int getThreadNum() {
         return threadNum;

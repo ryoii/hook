@@ -1,6 +1,8 @@
 package com.github.ryoii.core.filter;
 
-public interface Filter {
+import com.github.ryoii.core.model.Persistence;
+
+public interface Filter extends Persistence {
 
     boolean allow(String url);
 

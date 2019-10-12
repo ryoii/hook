@@ -13,6 +13,7 @@ import com.github.ryoii.core.scheduler.DefaultScheduler;
 import com.github.ryoii.core.scheduler.Scheduler;
 
 import java.io.IOException;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
 public abstract class BaseCrawler implements Configurable {
@@ -31,11 +32,17 @@ public abstract class BaseCrawler implements Configurable {
 
     public BaseCrawler(Configuration configuration) {
         this.configuration = configuration;
+        if (configuration.getName() == null) {
+            configuration.setName("crawler-" + UUID.randomUUID().toString().substring(0, 6));
+        }
     }
 
     private void init() {
         requesterFactory = RequesterFactory.of(configuration.getRequesterType(), configuration);
         scheduler = new DefaultScheduler(configuration);
+        if (conf().isPersistence()) {
+            scheduler.antiPersistence();
+        }
         scheduler.addTasks(seed);
     }
 
@@ -52,6 +59,7 @@ public abstract class BaseCrawler implements Configurable {
 
         try {
             latch.await();
+            scheduler.persistence();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

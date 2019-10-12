@@ -12,10 +12,21 @@ public class Configuration {
     /*
     /* Crawler
     */
+    private String name;
     private int threadNum;
     private boolean autoDetect;
     private boolean autoDetectImg;
+    private boolean persistence;
     private long restTime;
+
+    public String getName() {
+        return name;
+    }
+
+    public Configuration setName(String name) {
+        this.name = name;
+        return this;
+    }
 
     public int getThreadNum() {
         return threadNum;
@@ -41,6 +52,15 @@ public class Configuration {
 
     public Configuration setAutoDetectImg(boolean autoDetectImg) {
         this.autoDetectImg = autoDetectImg;
+        return this;
+    }
+
+    public boolean isPersistence() {
+        return persistence;
+    }
+
+    public Configuration setPersistence(boolean persistence) {
+        this.persistence = persistence;
         return this;
     }
 

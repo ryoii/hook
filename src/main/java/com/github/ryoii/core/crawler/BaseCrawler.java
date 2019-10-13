@@ -11,6 +11,8 @@ import com.github.ryoii.core.requester.Requester;
 import com.github.ryoii.core.requester.RequesterFactory;
 import com.github.ryoii.core.scheduler.DefaultScheduler;
 import com.github.ryoii.core.scheduler.Scheduler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -18,6 +20,7 @@ import java.util.concurrent.CountDownLatch;
 
 public abstract class BaseCrawler implements Configurable {
 
+    private Logger logger = LogManager.getLogger("crawler");
     private Configuration configuration;
     private Scheduler scheduler;
     private RequesterFactory requesterFactory;
@@ -134,13 +137,13 @@ public abstract class BaseCrawler implements Configurable {
                         scheduler.addTasks(taskList);
                         scheduler.countDown();
                     } catch (InterruptedException | IOException e) {
-                        // TODO: logger: exception
+                        logger.error(e);
                         if (task == null) continue;
                         if (task.decreaseLifeAndReturn()) {
                             scheduler.retry(task);
                         } else {
                             scheduler.countDown();
-                            // TODO: logger: give up
+                            logger.info("task-" + task.getUrl() + " was given up");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

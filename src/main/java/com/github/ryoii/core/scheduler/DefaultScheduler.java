@@ -6,6 +6,8 @@ import com.github.ryoii.core.filter.Filter;
 import com.github.ryoii.core.filter.FilterFactory;
 import com.github.ryoii.core.model.Persistence;
 import com.github.ryoii.core.model.Task;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.Queue;
@@ -14,6 +16,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class DefaultScheduler implements Scheduler, Configurable {
 
+    private final Logger logger = LogManager.getLogger("scheduler");
     private final Configuration configuration;
     private Queue<Task> taskQueue;
     private Filter filter;
@@ -41,7 +44,7 @@ public class DefaultScheduler implements Scheduler, Configurable {
                 filter.add(task.getUrl());
             }
         } else {
-            // TODO: logger: filtered
+            logger.debug("Filter the task-" + task.getUrl());
         }
     }
 
@@ -54,13 +57,14 @@ public class DefaultScheduler implements Scheduler, Configurable {
     public void countDown() {
         if (size.decrementAndGet() <= 0) {
             close();
-            // TODO: logger: closed
+            logger.info("Scheduler has been closed");
         }
+        logger.info(size + " task(s) left");
     }
 
     @Override
     public void retry(Task task) {
-        // TODO: logger: retry
+        logger.info("retry task-" + task.getUrl());
         taskQueue.add(task);
     }
 
@@ -71,37 +75,33 @@ public class DefaultScheduler implements Scheduler, Configurable {
 
     @Override
     public void persistence() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(
-                new FileOutputStream(conf().getName() + ".STQ"))) {
+        String fileName = conf().getName() + ".STQ";
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
             oos.writeObject(taskQueue);
             oos.flush();
         } catch (FileNotFoundException e) {
-            //TODO log can not create file
-            return;
+            logger.error("Can not create the file: " + fileName);
         } catch (IOException e) {
-            //TODO log can not write file
-            return;
+            logger.error("Can not write the file: " + fileName);
         }
         filter.persistence();
     }
 
     @Override
     public void antiPersistence() {
-        try (ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream(conf().getName() + ".STQ"))) {
+        String fileName = conf().getName() + ".STQ";
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
             Queue queue = (Queue) ois.readObject();
             for (Object o : queue) {
                 taskQueue.add((Task) o);
             }
             size.set(taskQueue.size());
         } catch (FileNotFoundException e) {
-            //TODO log this is a new crawler
-            return;
+            logger.info("Start a new scheduler. Can not find the file: " + fileName);
         } catch (IOException e) {
-            //TODO log can not read file
-            return;
+            logger.error("Start a new scheduler. Can not read the file:" + fileName);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         filter.antiPersistence();
     }

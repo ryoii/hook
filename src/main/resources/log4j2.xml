@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config"
+        name="HookLogConf">
+    <Appenders>
+        <Console name="stdout" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%level] %d{MM-dd HH:mm:ss} [%t] %logger{1}:  %msg%n"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="stdout"/>
+        </Root>
+    </Loggers>
+</Configuration>

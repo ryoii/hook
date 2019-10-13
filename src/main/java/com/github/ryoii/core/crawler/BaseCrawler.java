@@ -62,9 +62,12 @@ public abstract class BaseCrawler implements Configurable {
 
         try {
             latch.await();
-            scheduler.persistence();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        if (conf().isPersistence()) {
+            scheduler.persistence();
         }
     }
 

@@ -40,37 +40,6 @@ public abstract class BaseCrawler implements Configurable {
         }
     }
 
-    private void init() {
-        requesterFactory = RequesterFactory.of(configuration.getRequesterType(), configuration);
-        scheduler = new DefaultScheduler(configuration);
-        if (conf().isPersistence()) {
-            scheduler.antiPersistence();
-        }
-        scheduler.addTasks(seed);
-    }
-
-    public void start() {
-        init();
-
-        CrawlerThread[] hookTasks = new CrawlerThread[configuration.getThreadNum()];
-        latch = new CountDownLatch(configuration.getThreadNum());
-
-        for (int i = 0; i < hookTasks.length; i++) {
-            hookTasks[i] = new CrawlerThread();
-            hookTasks[i].start();
-        }
-
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        if (conf().isPersistence()) {
-            scheduler.persistence();
-        }
-    }
-
     public Task addSeed(String url) {
         return addSeed(url, false);
     }
@@ -111,6 +80,37 @@ public abstract class BaseCrawler implements Configurable {
     public BaseCrawler conf(Configuration configuration) {
         this.configuration = configuration;
         return this;
+    }
+
+    private void init() {
+        requesterFactory = RequesterFactory.of(configuration.getRequesterType(), configuration);
+        scheduler = new DefaultScheduler(configuration);
+        if (conf().isPersistence()) {
+            scheduler.antiPersistence();
+        }
+        scheduler.addTasks(seed);
+    }
+
+    public void start() {
+        init();
+
+        CrawlerThread[] hookTasks = new CrawlerThread[configuration.getThreadNum()];
+        latch = new CountDownLatch(configuration.getThreadNum());
+
+        for (int i = 0; i < hookTasks.length; i++) {
+            hookTasks[i] = new CrawlerThread();
+            hookTasks[i].start();
+        }
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (conf().isPersistence()) {
+            scheduler.persistence();
+        }
     }
 
     /**

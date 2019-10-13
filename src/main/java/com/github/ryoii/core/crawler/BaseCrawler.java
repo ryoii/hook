@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
@@ -37,37 +38,6 @@ public abstract class BaseCrawler implements Configurable {
         this.configuration = configuration;
         if (configuration.getName() == null) {
             configuration.setName("crawler-" + UUID.randomUUID().toString().substring(0, 6));
-        }
-    }
-
-    private void init() {
-        requesterFactory = RequesterFactory.of(configuration.getRequesterType(), configuration);
-        scheduler = new DefaultScheduler(configuration);
-        if (conf().isPersistence()) {
-            scheduler.antiPersistence();
-        }
-        scheduler.addTasks(seed);
-    }
-
-    public void start() {
-        init();
-
-        CrawlerThread[] hookTasks = new CrawlerThread[configuration.getThreadNum()];
-        latch = new CountDownLatch(configuration.getThreadNum());
-
-        for (int i = 0; i < hookTasks.length; i++) {
-            hookTasks[i] = new CrawlerThread();
-            hookTasks[i].start();
-        }
-
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        if (conf().isPersistence()) {
-            scheduler.persistence();
         }
     }
 
@@ -113,10 +83,47 @@ public abstract class BaseCrawler implements Configurable {
         return this;
     }
 
+    private void init() {
+        requesterFactory = RequesterFactory.of(configuration.getRequesterType(), configuration);
+        scheduler = new DefaultScheduler(configuration);
+        if (conf().isPersistence()) {
+            scheduler.antiPersistence();
+        }
+        scheduler.addTasks(seed);
+    }
+
+    public void start() {
+        init();
+
+        CrawlerThread[] hookTasks = new CrawlerThread[configuration.getThreadNum()];
+        latch = new CountDownLatch(configuration.getThreadNum());
+
+        for (int i = 0; i < hookTasks.length; i++) {
+            hookTasks[i] = new CrawlerThread("crawler-" + i);
+            hookTasks[i].start();
+        }
+
+        new DaemonSafeStopThead(hookTasks).start();
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (conf().isPersistence()) {
+            scheduler.persistence();
+        }
+    }
+
     /**
      * CrawlerThread
      */
     private class CrawlerThread extends Thread {
+
+        private CrawlerThread(String name) {
+            super(name);
+        }
 
         @Override
         public void run() {
@@ -139,9 +146,19 @@ public abstract class BaseCrawler implements Configurable {
                         taskList.forEach(t -> t.setLife(taskLife));
                         scheduler.addTasks(taskList);
                         scheduler.countDown();
-                    } catch (InterruptedException | IOException e) {
+                        if (restTime > 0) {
+                            Thread.sleep(restTime);
+                        }
+                    } catch (InterruptedException e) {
+                        // put back the polled task
+                        if (task != null) {
+                            scheduler.addTask(task);
+                        }
+                        logger.info(Thread.currentThread().getName() + " stopped");
+                        return;
+                    } catch (IOException e) {
                         logger.error(e);
-                        if (task == null) continue;
+                        // assert task != null;
                         if (task.decreaseLifeAndReturn()) {
                             scheduler.retry(task);
                         } else {
@@ -152,19 +169,36 @@ public abstract class BaseCrawler implements Configurable {
                         e.printStackTrace();
                         scheduler.countDown();
                     }
-
-                    if (restTime > 0) {
-                        try {
-                            Thread.sleep(restTime);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
                 }
             } finally {
                 latch.countDown();
             }
+        }
+    }
 
+    private class DaemonSafeStopThead extends Thread{
+
+        private CrawlerThread[] crawlerThreads;
+
+        private DaemonSafeStopThead(CrawlerThread[] crawlerThreads) {
+            super("crawler-daemon");
+            this.crawlerThreads = crawlerThreads;
+            setDaemon(true);
+        }
+
+        @Override
+        public void run() {
+            Scanner scanner = new Scanner(System.in);
+            String line;
+            while (true) {
+                line = scanner.nextLine();
+                if (!line.equalsIgnoreCase("q")) continue;
+                for (CrawlerThread crawlerThread : crawlerThreads) {
+                    crawlerThread.interrupt();
+                }
+                logger.info("stop the crawler");
+                break;
+            }
         }
     }
 }

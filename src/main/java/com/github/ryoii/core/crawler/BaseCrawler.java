@@ -89,7 +89,7 @@ public abstract class BaseCrawler implements Configurable {
         if (conf().isPersistence()) {
             scheduler.antiPersistence();
         }
-        scheduler.addTasks(seed);
+        scheduler.addSeeds(seed);
     }
 
     public void start() {
@@ -133,7 +133,7 @@ public abstract class BaseCrawler implements Configurable {
 
             try {
                 while (scheduler.isAlive()) {
-                    Task task = scheduler.getNextTask();
+                    Task task = scheduler.poll();
                     try {
                         if (task == null) {
                             Thread.sleep(100);
@@ -144,8 +144,7 @@ public abstract class BaseCrawler implements Configurable {
                         visit(page, taskList);
                         afterVisit(page, taskList);
                         taskList.forEach(t -> t.setLife(taskLife));
-                        scheduler.addTasks(taskList);
-                        scheduler.countDown();
+                        scheduler.addNextTasks(taskList);
                         if (restTime > 0) {
                             Thread.sleep(restTime);
                         }
@@ -162,12 +161,12 @@ public abstract class BaseCrawler implements Configurable {
                         if (task.decreaseLifeAndReturn()) {
                             scheduler.retry(task);
                         } else {
-                            scheduler.countDown();
+                            scheduler.finish(task);
                             logger.info("task-" + task.getUrl() + " was given up");
                         }
                     } catch (Exception e) {
+                        scheduler.finish(task);
                         e.printStackTrace();
-                        scheduler.countDown();
                     }
                 }
             } finally {

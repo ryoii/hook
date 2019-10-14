@@ -4,8 +4,8 @@ import com.github.ryoii.core.config.Configurable;
 import com.github.ryoii.core.config.Configuration;
 import com.github.ryoii.core.filter.Filter;
 import com.github.ryoii.core.filter.FilterFactory;
-import com.github.ryoii.core.model.Persistence;
 import com.github.ryoii.core.model.Task;
+import com.github.ryoii.core.model.TaskList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +21,7 @@ public class DefaultScheduler implements Scheduler, Configurable {
     private Queue<Task> taskQueue;
     private Filter filter;
     private volatile boolean alive;
-    private AtomicLong size = new AtomicLong(0);
+    private AtomicLong activeTaskNum = new AtomicLong(0);
 
     public DefaultScheduler(Configuration configuration) {
         this.configuration = configuration;
@@ -31,15 +31,20 @@ public class DefaultScheduler implements Scheduler, Configurable {
     }
 
     @Override
-    public Task getNextTask() {
+    public Task poll() {
         return taskQueue.poll();
+    }
+
+    @Override
+    public void addSeeds(TaskList tasks) {
+        tasks.forEach(this::addTask);
     }
 
     @Override
     public void addTask(Task task) {
         if (task.isForce() || filter.allow(task.getUrl())) {
             taskQueue.add(task);
-            size.incrementAndGet();
+            activeTaskNum.incrementAndGet();
             if (!task.isIgnore()) {
                 filter.add(task.getUrl());
             }
@@ -49,17 +54,23 @@ public class DefaultScheduler implements Scheduler, Configurable {
     }
 
     @Override
-    public void addTasks(Iterable<Task> tasks) {
+    public void addNextTasks(TaskList tasks) {
         tasks.forEach(this::addTask);
+        finish(null);
     }
 
     @Override
-    public void countDown() {
-        if (size.decrementAndGet() <= 0) {
+    public void finish(Task task) {
+        /* The task has been remove from the taskQueue, so ignore it.
+        *  Use activeTaskNum to recode the number of active tasks instead of the size of taskQueue.
+        *  The reason why recode the number of active tasks is to judge whether the schedule
+        *  should be closed.
+        *  Once it finish a task and no active tasks any more, it means that no more tasks
+        *  will be added in the future. */
+        if (activeTaskNum.decrementAndGet() <= 0) {
             close();
             logger.info("Scheduler has been closed");
         }
-        logger.info(size + " task(s) left");
     }
 
     @Override
@@ -95,7 +106,7 @@ public class DefaultScheduler implements Scheduler, Configurable {
             for (Object o : queue) {
                 taskQueue.add((Task) o);
             }
-            size.set(taskQueue.size());
+            activeTaskNum.set(taskQueue.size());
         } catch (FileNotFoundException e) {
             logger.info("Start a new scheduler. Can not find the file: " + fileName);
         } catch (IOException e) {

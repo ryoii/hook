@@ -36,8 +36,9 @@ public class HttpClientRequester implements Requester, Configurable {
                 .headers(configuration.getHeaders().toArray(new String[]{}))
                 .GET().build();
         HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+        int statusCode = response.statusCode();
         String contentType = response.headers().firstValue("content-type").orElse("");
-        return new Page(task, response.body(), contentType);
+        return new Page(task, response.body(), statusCode, contentType);
     }
 
     @Override

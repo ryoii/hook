@@ -12,14 +12,16 @@ public class Page extends DocumentParser implements MetaGetter {
 
     private Task task;
     private byte[] content;
+    private int statusCode;
     private String contentType;
     private Charset charset = null;
     private String html = null;
     private Document document = null;
 
-    public Page(Task task, byte[] content, String contentType) {
+    public Page(Task task, byte[] content, int statusCode, String contentType) {
         this.task = task;
         this.content = content;
+        this.statusCode = statusCode;
         this.contentType = contentType;
     }
 
@@ -29,6 +31,10 @@ public class Page extends DocumentParser implements MetaGetter {
 
     public byte[] content() {
         return content;
+    }
+
+    public int statusCode() {
+        return statusCode;
     }
 
     public String contentType() {

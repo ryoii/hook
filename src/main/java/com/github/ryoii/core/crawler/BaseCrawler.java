@@ -11,8 +11,8 @@ import com.github.ryoii.core.requester.Requester;
 import com.github.ryoii.core.requester.RequesterFactory;
 import com.github.ryoii.core.scheduler.DefaultScheduler;
 import com.github.ryoii.core.scheduler.Scheduler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -21,7 +21,7 @@ import java.util.concurrent.CountDownLatch;
 
 public abstract class BaseCrawler implements Configurable {
 
-    private Logger logger = LogManager.getLogger("crawler");
+    private final Logger logger = LoggerFactory.getLogger("crawler");
     private Configuration configuration;
     private Scheduler scheduler;
     private RequesterFactory requesterFactory;
@@ -160,7 +160,7 @@ public abstract class BaseCrawler implements Configurable {
                         return;
                     } catch (IOException e) {
                         // catch IOException while network problem occurs or timed out
-                        logger.error(e);
+                        logger.error(e.getMessage(), e);
                         // assert task != null;
                         if (task.decreaseLifeAndReturn()) {
                             scheduler.retry(task);
@@ -171,7 +171,7 @@ public abstract class BaseCrawler implements Configurable {
                     } catch (Exception e) {
                         scheduler.finish(task);
                         // unknown exception occurs, give up the task
-                        e.printStackTrace();
+                        logger.error(e.getMessage(), e);
                     }
                 }
             } finally {

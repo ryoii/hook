@@ -2,9 +2,8 @@ package com.github.ryoii.core.filter;
 
 import com.github.ryoii.core.config.Configurable;
 import com.github.ryoii.core.config.Configuration;
-import com.github.ryoii.core.model.Persistence;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.Set;
@@ -12,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class HashFilter implements Filter, Configurable {
 
-    private final Logger logger = LogManager.getLogger("filter");
+    private final Logger logger = LoggerFactory.getLogger("filter");
     private final Configuration configuration;
 
     public HashFilter(Configuration configuration) {
@@ -59,7 +58,7 @@ public class HashFilter implements Filter, Configurable {
         } catch (IOException e) {
             logger.error("Start a new filter. Can not read the file:" + fileName);
         } catch (ClassNotFoundException e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
         }
     }
 

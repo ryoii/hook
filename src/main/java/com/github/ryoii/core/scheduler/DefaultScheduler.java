@@ -6,8 +6,8 @@ import com.github.ryoii.core.filter.Filter;
 import com.github.ryoii.core.filter.FilterFactory;
 import com.github.ryoii.core.model.Task;
 import com.github.ryoii.core.model.TaskList;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.Queue;
@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class DefaultScheduler implements Scheduler, Configurable {
 
-    private final Logger logger = LogManager.getLogger("scheduler");
+    private final Logger logger = LoggerFactory.getLogger("scheduler");
     private final Configuration configuration;
     private Queue<Task> taskQueue;
     private Filter filter;
@@ -115,7 +115,7 @@ public class DefaultScheduler implements Scheduler, Configurable {
         } catch (IOException e) {
             logger.error("Start a new scheduler. Can not read the file:" + fileName);
         } catch (ClassNotFoundException e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
         }
         filter.antiPersistence();
     }

@@ -171,5 +171,6 @@ public class GithubTrending extends AutoDetectCrawler {
 
 ## Thanks
 
-[jsoup](https://github.com/jhy/jsoup): Java HTML Parser, with best of DOM, CSS, and jquery [website](https://jsoup.org/)
+[jsoup](https://github.com/jhy/jsoup): Java HTML Parser, with best of DOM, CSS, and jquery [https://jsoup.org/](https://jsoup.org/)
 
+[log4j2](https://github.com/apache/logging-log4j2): Mirror of Apache Logging Log4J2

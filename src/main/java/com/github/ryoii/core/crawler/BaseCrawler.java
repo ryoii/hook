@@ -34,10 +34,11 @@ public abstract class BaseCrawler implements Configurable {
         this(Configuration.defaultConfiguration());
     }
 
+    private final static String PREFIX_CRAWLER_NAME = "crawler-";
     public BaseCrawler(Configuration configuration) {
         this.configuration = configuration;
         if (configuration.getName() == null) {
-            configuration.setName("crawler-" + UUID.randomUUID().toString().substring(0, 6));
+            configuration.setName(PREFIX_CRAWLER_NAME + UUID.randomUUID().toString().substring(0, 6));
         }
     }
 
@@ -99,7 +100,7 @@ public abstract class BaseCrawler implements Configurable {
         latch = new CountDownLatch(configuration.getThreadNum());
 
         for (int i = 0; i < hookTasks.length; i++) {
-            hookTasks[i] = new CrawlerThread("crawler-" + i);
+            hookTasks[i] = new CrawlerThread(PREFIX_CRAWLER_NAME + i);
             hookTasks[i].start();
         }
 
@@ -149,13 +150,16 @@ public abstract class BaseCrawler implements Configurable {
                             Thread.sleep(restTime);
                         }
                     } catch (InterruptedException e) {
+                        // catch InterruptedException while crawler is stopped forcibly
                         // put back the polled task
                         if (task != null) {
                             scheduler.addTask(task);
                         }
                         logger.info(Thread.currentThread().getName() + " stopped");
+                        // crawler has been stopped, break the while loop
                         return;
                     } catch (IOException e) {
+                        // catch IOException while network problem occurs or timed out
                         logger.error(e);
                         // assert task != null;
                         if (task.decreaseLifeAndReturn()) {
@@ -166,6 +170,7 @@ public abstract class BaseCrawler implements Configurable {
                         }
                     } catch (Exception e) {
                         scheduler.finish(task);
+                        // unknown exception occurs, give up the task
                         e.printStackTrace();
                     }
                 }
@@ -177,10 +182,11 @@ public abstract class BaseCrawler implements Configurable {
 
     private class DaemonSafeStopThead extends Thread{
 
+        private final static String DAEMON_NAME = "crawler-daemon";
         private CrawlerThread[] crawlerThreads;
 
         private DaemonSafeStopThead(CrawlerThread[] crawlerThreads) {
-            super("crawler-daemon");
+            super(DAEMON_NAME);
             this.crawlerThreads = crawlerThreads;
             setDaemon(true);
         }

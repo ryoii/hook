@@ -37,6 +37,7 @@ public class HashFilter implements Filter, Configurable {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
             oos.writeObject(set);
             oos.flush();
+            logger.info("Save " + set.size() + " filter url(s)");
         } catch (FileNotFoundException e) {
             logger.error("Can not create the file:" + fileName);
         } catch (IOException e) {
@@ -52,6 +53,7 @@ public class HashFilter implements Filter, Configurable {
             for (Object o : set) {
                 this.set.add((String) o);
             }
+            logger.info("Load " + set.size() + " filter url(s)");
         } catch (FileNotFoundException e) {
             logger.info("Start a new filter. Can not find the file: " + fileName);
         } catch (IOException e) {

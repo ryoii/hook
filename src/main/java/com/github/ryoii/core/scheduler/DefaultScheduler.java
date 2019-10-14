@@ -57,6 +57,7 @@ public class DefaultScheduler implements Scheduler, Configurable {
     public void addNextTasks(TaskList tasks) {
         tasks.forEach(this::addTask);
         finish(null);
+        logger.info("Add " + tasks.size() + " task(s), left " + activeTaskNum.get() + " task(s)");
     }
 
     @Override
@@ -90,6 +91,7 @@ public class DefaultScheduler implements Scheduler, Configurable {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
             oos.writeObject(taskQueue);
             oos.flush();
+            logger.info("Save " + taskQueue.size() + "task(s)");
         } catch (FileNotFoundException e) {
             logger.error("Can not create the file: " + fileName);
         } catch (IOException e) {
@@ -107,6 +109,7 @@ public class DefaultScheduler implements Scheduler, Configurable {
                 taskQueue.add((Task) o);
             }
             activeTaskNum.set(taskQueue.size());
+            logger.info("Load " + taskQueue.size() + " task(s)");
         } catch (FileNotFoundException e) {
             logger.info("Start a new scheduler. Can not find the file: " + fileName);
         } catch (IOException e) {

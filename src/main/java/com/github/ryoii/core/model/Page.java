@@ -1,7 +1,6 @@
 package com.github.ryoii.core.model;
 
-import com.github.ryoii.core.util.ContentTypeCharsetDetector;
-import com.github.ryoii.core.util.RegexCharsetDetector;
+import com.github.ryoii.core.util.CharsetDetector;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -57,10 +56,7 @@ public class Page extends DocumentParser implements MetaGetter {
 
     public Charset charset() {
         if (charset == null) {
-            charset = ContentTypeCharsetDetector.detect(contentType);
-            if (charset == null) {
-                charset = RegexCharsetDetector.detect(content);
-            }
+            charset = CharsetDetector.detect(this);
         }
         return charset;
     }

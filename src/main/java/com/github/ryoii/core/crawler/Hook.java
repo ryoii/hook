@@ -1,7 +1,6 @@
 package com.github.ryoii.core.crawler;
 
 import com.github.ryoii.core.config.Configuration;
-import com.github.ryoii.core.filter.FilterFactory;
 import com.github.ryoii.core.model.*;
 import com.github.ryoii.core.proxy.Proxies;
 import com.github.ryoii.core.regex.RegexRules;
@@ -156,17 +155,6 @@ public class Hook implements MetaSetter<Hook> {
     }
 
     /**
-     * Set {@link com.github.ryoii.core.requester.RequesterFactory.RequesterFactoryType} for the crawler
-     *
-     * @param type requester factory type
-     * @return Hook
-     */
-    public Hook requesterType(RequesterFactory.RequesterFactoryType type) {
-        configuration.setRequesterType(type);
-        return this;
-    }
-
-    /**
      * Set User Agent
      *
      * @param userAgent user agent
@@ -289,19 +277,6 @@ public class Hook implements MetaSetter<Hook> {
         this.proxies.addAll(proxies);
         return this;
     }
-
-    /**
-     * Set filter type
-     *
-     * @param filter default, {@link FilterFactory.Filters#HASH_FILTER}
-     * @return Hook
-     * @see FilterFactory
-     */
-    public Hook filter(FilterFactory.Filters filter) {
-        configuration.setFilterName(filter);
-        return this;
-    }
-
 
     /* Task */
 

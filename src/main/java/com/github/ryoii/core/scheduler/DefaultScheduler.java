@@ -2,8 +2,6 @@ package com.github.ryoii.core.scheduler;
 
 import com.github.ryoii.core.config.Configurable;
 import com.github.ryoii.core.config.Configuration;
-import com.github.ryoii.core.filter.Filter;
-import com.github.ryoii.core.filter.FilterFactory;
 import com.github.ryoii.core.model.Task;
 import com.github.ryoii.core.model.TaskList;
 import org.slf4j.Logger;
@@ -19,14 +17,13 @@ public class DefaultScheduler implements Scheduler, Configurable {
     private final Logger logger = LoggerFactory.getLogger("scheduler");
     private final Configuration configuration;
     private Queue<Task> taskQueue;
-    private Filter filter;
     private volatile boolean alive;
     private AtomicLong activeTaskNum = new AtomicLong(0);
 
     public DefaultScheduler(Configuration configuration) {
         this.configuration = configuration;
         taskQueue = new ConcurrentLinkedQueue<>();
-        filter = FilterFactory.of(configuration.getFilterName(), configuration);
+
         alive = true;
     }
 
@@ -42,15 +39,8 @@ public class DefaultScheduler implements Scheduler, Configurable {
 
     @Override
     public void addTask(Task task) {
-        if (task.isForce() || filter.allow(task.getUrl())) {
-            taskQueue.add(task);
-            activeTaskNum.incrementAndGet();
-            if (!task.isIgnore()) {
-                filter.add(task.getUrl());
-            }
-        } else {
-            logger.debug("Filter the task-" + task.getUrl());
-        }
+        taskQueue.add(task);
+        activeTaskNum.incrementAndGet();
     }
 
     @Override
@@ -97,7 +87,6 @@ public class DefaultScheduler implements Scheduler, Configurable {
         } catch (IOException e) {
             logger.error("Can not write the file: " + fileName);
         }
-        filter.persistence();
     }
 
     @Override
@@ -117,7 +106,6 @@ public class DefaultScheduler implements Scheduler, Configurable {
         } catch (ClassNotFoundException e) {
             logger.error(e.getMessage(), e);
         }
-        filter.antiPersistence();
     }
 
     @Override

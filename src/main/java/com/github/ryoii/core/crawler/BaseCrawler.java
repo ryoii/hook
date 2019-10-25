@@ -2,11 +2,14 @@ package com.github.ryoii.core.crawler;
 
 import com.github.ryoii.core.config.Configurable;
 import com.github.ryoii.core.config.Configuration;
+import com.github.ryoii.core.filter.Filter;
+import com.github.ryoii.core.filter.HashFilter;
 import com.github.ryoii.core.model.AddOnlyTaskList;
 import com.github.ryoii.core.model.Page;
 import com.github.ryoii.core.model.Task;
 import com.github.ryoii.core.model.TaskList;
 import com.github.ryoii.core.pipeline.Pipeline;
+import com.github.ryoii.core.requester.HttpClientRequesterFactory;
 import com.github.ryoii.core.requester.Requester;
 import com.github.ryoii.core.requester.RequesterFactory;
 import com.github.ryoii.core.scheduler.DefaultScheduler;
@@ -24,6 +27,7 @@ public abstract class BaseCrawler implements Configurable {
     private final Logger logger = LoggerFactory.getLogger("crawler");
     private Configuration configuration;
     private Scheduler scheduler;
+    private Filter filter;
     private RequesterFactory requesterFactory;
     private Pipeline pipeline;
 
@@ -85,10 +89,21 @@ public abstract class BaseCrawler implements Configurable {
     }
 
     private void init() {
-        requesterFactory = RequesterFactory.of(configuration.getRequesterType(), configuration);
-        scheduler = new DefaultScheduler(configuration);
+        if (requesterFactory == null) {
+            requesterFactory = new HttpClientRequesterFactory();
+        }
+
+        if (scheduler == null) {
+            scheduler = new DefaultScheduler(configuration);
+        }
+
+        if (filter == null) {
+            filter = new HashFilter(configuration);
+        }
+
         if (conf().isPersistence()) {
             scheduler.antiPersistence();
+            filter.antiPersistence();
         }
         scheduler.addSeeds(seed);
     }
@@ -114,6 +129,7 @@ public abstract class BaseCrawler implements Configurable {
 
         if (conf().isPersistence()) {
             scheduler.persistence();
+            filter.persistence();
         }
     }
 
@@ -130,7 +146,7 @@ public abstract class BaseCrawler implements Configurable {
         public void run() {
             int taskLife = configuration.getRetryTime();
             long restTime = configuration.getRestTime();
-            Requester requester = requesterFactory.getInstance();
+            Requester requester = requesterFactory.getRequester(configuration);
 
             try {
                 while (scheduler.isAlive()) {
@@ -145,6 +161,7 @@ public abstract class BaseCrawler implements Configurable {
                         visit(page, taskList);
                         afterVisit(page, taskList);
                         taskList.forEach(t -> t.setLife(taskLife));
+                        taskList = filter.filter(taskList);
                         scheduler.addNextTasks(taskList);
                         if (restTime > 0) {
                             Thread.sleep(restTime);

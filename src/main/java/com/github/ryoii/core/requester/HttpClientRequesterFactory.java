@@ -6,22 +6,17 @@ import java.net.http.HttpClient;
 
 public class HttpClientRequesterFactory implements RequesterFactory {
 
-    private volatile Requester instance;
-    private Configuration configuration;
-
-    HttpClientRequesterFactory(Configuration configuration) {
-        this.configuration = configuration;
-    }
+    private volatile Requester requester;
 
     @Override
-    public Requester getInstance() {
-        if (instance == null) {
+    public Requester getRequester(Configuration configuration) {
+        if (requester == null) {
             synchronized (HttpClient.class) {
-                if (instance == null) {
-                    instance = new HttpClientRequester(configuration);
+                if (requester == null) {
+                    requester = new HttpClientRequester(configuration);
                 }
             }
         }
-        return instance;
+        return requester;
     }
 }

@@ -2,10 +2,13 @@ package com.github.ryoii.core.filter;
 
 import com.github.ryoii.core.config.Configurable;
 import com.github.ryoii.core.config.Configuration;
+import com.github.ryoii.core.model.Task;
+import com.github.ryoii.core.model.TaskList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,6 +22,25 @@ public class HashFilter implements Filter, Configurable {
     }
 
     private Set<String> set = ConcurrentHashMap.newKeySet();
+
+    @Override
+    public TaskList filter(TaskList tasks) {
+        Iterator<Task> iterator = tasks.iterator();
+        Task task;
+        while (iterator.hasNext()) {
+            task = iterator.next();
+
+            if (task.isForce() || allow(task.getUrl())) {
+                if (!task.isIgnore()) {
+                    add(task.getUrl());
+                }
+            } else {
+                iterator.remove();
+                logger.debug("Filter the task-" + task.getUrl());
+            }
+        }
+        return tasks;
+    }
 
     @Override
     public boolean allow(String url) {

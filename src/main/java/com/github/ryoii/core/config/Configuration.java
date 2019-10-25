@@ -1,8 +1,6 @@
 package com.github.ryoii.core.config;
 
-import com.github.ryoii.core.filter.FilterFactory;
 import com.github.ryoii.core.proxy.Proxies;
-import com.github.ryoii.core.requester.RequesterFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,24 +72,14 @@ public class Configuration {
     }
 
     /*
-        /* Requester
-        */
-    private RequesterFactory.RequesterFactoryType requesterType;
+    /* Requester
+    */
     private String userAgent = "";
     private String cookie = "";
     private List<String> headers = new ArrayList<>();
     private long timeout;
     private long connectTimeout;
     private Proxies proxies;
-
-    public RequesterFactory.RequesterFactoryType getRequesterType() {
-        return requesterType;
-    }
-
-    public Configuration setRequesterType(RequesterFactory.RequesterFactoryType requesterType) {
-        this.requesterType = requesterType;
-        return this;
-    }
 
     public String getUserAgent() {
         return userAgent;
@@ -144,20 +132,6 @@ public class Configuration {
     }
 
     /*
-        /* Filter
-        */
-    private FilterFactory.Filters filterName;
-
-    public FilterFactory.Filters getFilterName() {
-        return filterName;
-    }
-
-    public Configuration setFilterName(FilterFactory.Filters filterName) {
-        this.filterName = filterName;
-        return this;
-    }
-
-    /*
     /* Task
     */
     private int retryTime;
@@ -174,12 +148,10 @@ public class Configuration {
     public static Configuration defaultConfiguration() {
         Configuration configuration = new Configuration();
         configuration.threadNum = 50;
-        configuration.requesterType = RequesterFactory.RequesterFactoryType.HTTPCLIENT_REQUESTER;
         configuration.addHeader("powerBy", "hook");
         configuration.timeout = 30000;
         configuration.connectTimeout = 30000;
         configuration.proxies = new Proxies();
-        configuration.filterName = FilterFactory.Filters.HASH_FILTER;
         configuration.retryTime = 5;
         configuration.autoDetect = false;
         configuration.autoDetectImg = false;

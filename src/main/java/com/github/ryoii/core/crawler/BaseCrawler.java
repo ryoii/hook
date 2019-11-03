@@ -105,7 +105,9 @@ public abstract class BaseCrawler implements Configurable {
             scheduler.antiPersistence();
             filter.antiPersistence();
         }
-        scheduler.addSeeds(seed);
+
+        /* filter seeds and add them into scheduler*/
+        scheduler.addSeeds(filter.filter(seed));
     }
 
     public void start() {

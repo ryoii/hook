@@ -35,6 +35,10 @@ public class DefaultScheduler implements Scheduler, Configurable {
     @Override
     public void addSeeds(TaskList tasks) {
         tasks.forEach(this::addTask);
+        if (taskQueue.size() <= 0) {
+            logger.info("No seeds available.");
+            close();
+        }
     }
 
     @Override
@@ -60,7 +64,6 @@ public class DefaultScheduler implements Scheduler, Configurable {
         *  will be added in the future. */
         if (activeTaskNum.decrementAndGet() <= 0) {
             close();
-            logger.info("Scheduler has been closed");
         }
     }
 
@@ -111,6 +114,7 @@ public class DefaultScheduler implements Scheduler, Configurable {
     @Override
     public void close() {
         alive = false;
+        logger.info("Scheduler has been closed");
     }
 
     @Override

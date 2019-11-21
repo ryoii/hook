@@ -163,8 +163,8 @@ public abstract class BaseCrawler implements Configurable {
                         visit(page, taskList);
                         afterVisit(page, taskList);
                         taskList.forEach(t -> t.setLife(taskLife));
-                        taskList = filter.filter(taskList);
-                        scheduler.addNextTasks(taskList);
+                        scheduler.addNextTasks(filter.filter(taskList));
+                        scheduler.finish(task);
                         if (restTime > 0) {
                             Thread.sleep(restTime);
                         }

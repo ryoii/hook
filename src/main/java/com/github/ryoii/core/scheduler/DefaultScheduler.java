@@ -50,8 +50,7 @@ public class DefaultScheduler implements Scheduler, Configurable {
     @Override
     public void addNextTasks(TaskList tasks) {
         tasks.forEach(this::addTask);
-        finish(null);
-        logger.info("Add " + tasks.size() + " task(s), left " + activeTaskNum.get() + " task(s)");
+        logger.info("Add " + tasks.size() + " task(s), " + (activeTaskNum.get() - taskQueue.size()) + " task(s) running, left " + taskQueue.size() + " task(s)");
     }
 
     @Override

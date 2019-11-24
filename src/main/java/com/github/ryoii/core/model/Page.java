@@ -47,6 +47,10 @@ public class Page extends DocumentParser implements MetaGetter {
         return html;
     }
 
+    public String jsonString() {
+        return html();
+    }
+
     public Document getDocument() {
         if (this.document == null) {
             document = Jsoup.parse(html(), task.getUrl());

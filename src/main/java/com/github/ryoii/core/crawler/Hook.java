@@ -7,6 +7,7 @@ import com.github.ryoii.core.regex.RegexRules;
 import com.github.ryoii.core.requester.RequesterFactory;
 
 import java.net.Proxy;
+import java.net.http.HttpClient;
 import java.util.*;
 import java.util.function.BiConsumer;
 
@@ -227,6 +228,11 @@ public class Hook implements MetaSetter<Hook> {
      */
     public Hook connectTimeout(long connectTimeout) {
         configuration.setConnectTimeout(connectTimeout);
+        return this;
+    }
+
+    public Hook redirectPolicy(HttpClient.Redirect policy) {
+        configuration.setRedirectPolicy(policy);
         return this;
     }
 

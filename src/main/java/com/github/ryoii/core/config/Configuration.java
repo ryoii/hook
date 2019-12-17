@@ -2,6 +2,7 @@ package com.github.ryoii.core.config;
 
 import com.github.ryoii.core.proxy.Proxies;
 
+import java.net.http.HttpClient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +80,7 @@ public class Configuration {
     private List<String> headers = new ArrayList<>();
     private long timeout;
     private long connectTimeout;
+    private HttpClient.Redirect redirectPolicy = HttpClient.Redirect.NEVER;
     private Proxies proxies;
 
     public String getUserAgent() {
@@ -124,6 +126,15 @@ public class Configuration {
 
     public Configuration setConnectTimeout(long connectTimeout) {
         this.connectTimeout = connectTimeout;
+        return this;
+    }
+
+    public HttpClient.Redirect getRedirectPolicy() {
+        return redirectPolicy;
+    }
+
+    public Configuration setRedirectPolicy(HttpClient.Redirect policy) {
+        this.redirectPolicy = policy;
         return this;
     }
 

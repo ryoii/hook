@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -25,6 +27,7 @@ public class HttpClientRequester implements Requester, Configurable {
         this.configuration = configuration;
         client = HttpClient.newBuilder()
                 .proxy(new RandomProxySelector(configuration.getProxies()))
+                .followRedirects(configuration.getRedirectPolicy())
                 .connectTimeout(Duration.ofMillis(configuration.getConnectTimeout()))
                 .build();
     }

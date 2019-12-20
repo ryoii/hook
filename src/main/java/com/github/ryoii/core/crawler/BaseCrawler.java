@@ -22,7 +22,7 @@ import java.util.Scanner;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
-public abstract class BaseCrawler implements Configurable {
+abstract class BaseCrawler implements Configurable {
 
     private final Logger logger = LoggerFactory.getLogger("crawler");
     private Configuration configuration;
@@ -34,46 +34,46 @@ public abstract class BaseCrawler implements Configurable {
     private CountDownLatch latch;
     private TaskList seed = new TaskList();
 
-    public BaseCrawler() {
+    BaseCrawler() {
         this(Configuration.defaultConfiguration());
     }
 
     private final static String PREFIX_CRAWLER_NAME = "crawler-";
-    public BaseCrawler(Configuration configuration) {
+    BaseCrawler(Configuration configuration) {
         this.configuration = configuration;
         if (configuration.getName() == null) {
             configuration.setName(PREFIX_CRAWLER_NAME + UUID.randomUUID().toString().substring(0, 6));
         }
     }
 
-    public Task addSeed(String url) {
+    Task addSeed(String url) {
         return addSeed(url, false);
     }
 
-    public Task addSeed(String url, boolean force) {
+    Task addSeed(String url, boolean force) {
         Task task = new Task(url, force);
         task.setLife(configuration.getRetryTime());
         seed.add(task);
         return task;
     }
 
-    public Task addSeed(String url, String type) {
+    Task addSeed(String url, String type) {
         return addSeed(url, type, false);
     }
 
-    public Task addSeed(String url, String type, boolean force) {
+    private Task addSeed(String url, String type, boolean force) {
         Task task = new Task(url, force).type(type);
         task.setLife(configuration.getRetryTime());
         seed.add(task);
         return task;
     }
 
-    public BaseCrawler setSeeds(TaskList seeds) {
+    BaseCrawler setSeeds(TaskList seeds) {
         this.seed = seeds;
         return this;
     }
 
-    public abstract void visit(Page page, AddOnlyTaskList tasks);
+    abstract void visit(Page page, AddOnlyTaskList tasks);
 
     protected void afterVisit(Page page, AddOnlyTaskList taskList) {
     }
@@ -83,7 +83,7 @@ public abstract class BaseCrawler implements Configurable {
         return this.configuration;
     }
 
-    public BaseCrawler conf(Configuration configuration) {
+    BaseCrawler conf(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -110,7 +110,7 @@ public abstract class BaseCrawler implements Configurable {
         scheduler.addSeeds(filter.filter(seed));
     }
 
-    public void start() {
+    void start() {
         init();
 
         CrawlerThread[] hookTasks = new CrawlerThread[configuration.getThreadNum()];

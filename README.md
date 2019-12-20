@@ -93,52 +93,6 @@ class Example {
 }
 ```
 
-### Advanced customized crawler
-
-Implement the crawler by extend `BaseCrawler` or `AutoDetectCrawler` and overriding the `visit()` method.
-
-Here's how to implement a crawler that fetching the github trend list.
-
-```java
-import com.github.ryoii.core.crawler.AutoDetectCrawler;
-import com.github.ryoii.core.model.AddOnlyTaskList;
-import com.github.ryoii.core.model.Links;
-import com.github.ryoii.core.model.Page;
-
-public class GithubTrending extends AutoDetectCrawler {
-
-    private static String baseUrl = "https://github.com/trending";
-
-    public static void main(String[] args) {
-        GithubTrending crawler = new GithubTrending();
-        crawler.conf().setThreadNum(10)
-                .setConnectTimeout(1000)
-                .setTimeout(1000);
-        crawler.addSeed(baseUrl).type("trending").setLife(5);
-        crawler.start();
-    }
-
-    @Override
-    public void visit(Page page, AddOnlyTaskList tasks) {
-        if (page.typeMatch("trending")) {
-            Links links = page.links("article.Box-row>h1>a");
-            tasks.add(links.toTaskList("repo"));
-
-        } else if (page.typeMatch("repo")) {
-            String name = page.text("strong[itemprop=name] > a");
-            String stars = page.text("a.social-count");
-
-            System.out.println(Thread.currentThread().getName());
-            System.out.println("repository: " + name);
-            System.out.println("url: " + page.url());
-            System.out.println("stars: " + stars);
-            System.out.println("-----------------------------------");
-        }
-    }
-}
-
-```
-
 ## More examples
 
 [more examples](https://github.com/ryoii/hook/tree/master/example)
@@ -152,11 +106,6 @@ public class GithubTrending extends AutoDetectCrawler {
 |:---|
 |[auto detect rule by regex](https://github.com/ryoii/hook/blob/master/example/RegexExample.java)|
 |[auto detect page by selector](https://github.com/ryoii/hook/blob/master/example/PageDetect.java)|
-
-|Advance crawler|
-|:---|
-|[fetch douban](https://github.com/ryoii/hook/blob/master/example/DoubanChart.java)|
-|[fetch github trending](https://github.com/ryoii/hook/blob/master/example/GithubTrending.java)|
 
 ## Todo list
 

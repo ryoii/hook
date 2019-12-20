@@ -9,13 +9,13 @@ import org.jsoup.nodes.Document;
 
 import java.util.List;
 
-public abstract class AutoDetectCrawler extends BaseCrawler {
+abstract class AutoDetectCrawler extends BaseCrawler {
 
-    public AutoDetectCrawler() {
+    AutoDetectCrawler() {
         super();
     }
 
-    public AutoDetectCrawler(Configuration configuration) {
+    AutoDetectCrawler(Configuration configuration) {
         super(configuration);
     }
 
@@ -47,22 +47,22 @@ public abstract class AutoDetectCrawler extends BaseCrawler {
         }
     }
 
-    public AutoDetectCrawler addRegex(String regex) {
+    AutoDetectCrawler addRegex(String regex) {
         regexRules.addRule(regex);
         return this;
     }
 
-    public AutoDetectCrawler addRegex(String regex, String type) {
+    AutoDetectCrawler addRegex(String regex, String type) {
         regexRules.addRule(regex, type);
         return this;
     }
 
-    public AutoDetectCrawler setAutoDetectImg(boolean autoDetectImg) {
+    AutoDetectCrawler setAutoDetectImg(boolean autoDetectImg) {
         conf().setAutoDetectImg(autoDetectImg);
         return this;
     }
 
-    public AutoDetectCrawler setRegexRules(RegexRules regexRules) {
+    AutoDetectCrawler setRegexRules(RegexRules regexRules) {
         this.regexRules = regexRules;
         return this;
     }

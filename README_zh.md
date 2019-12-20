@@ -93,52 +93,6 @@ class Example {
 }
 ```
 
-### 高级定制爬虫
-
-通过继承`BaseCrawler`类或者`AutoDetectCrawler`类并重写`visit()`方法来实现爬虫功能
-
-下面展示了如何实现爬取github趋势列表的爬虫程序
-
-```java
-import com.github.ryoii.core.crawler.AutoDetectCrawler;
-import com.github.ryoii.core.model.AddOnlyTaskList;
-import com.github.ryoii.core.model.Links;
-import com.github.ryoii.core.model.Page;
-
-public class GithubTrending extends AutoDetectCrawler {
-
-    private static String baseUrl = "https://github.com/trending";
-
-    public static void main(String[] args) {
-        GithubTrending crawler = new GithubTrending();
-        crawler.conf().setThreadNum(10)
-                .setConnectTimeout(1000)
-                .setTimeout(1000);
-        crawler.addSeed(baseUrl).type("trending").setLife(5);
-        crawler.start();
-    }
-
-    @Override
-    public void visit(Page page, AddOnlyTaskList tasks) {
-        if (page.typeMatch("trending")) {
-            Links links = page.links("article.Box-row>h1>a");
-            tasks.add(links.toTaskList("repo"));
-
-        } else if (page.typeMatch("repo")) {
-            String name = page.text("strong[itemprop=name] > a");
-            String stars = page.text("a.social-count");
-
-            System.out.println(Thread.currentThread().getName());
-            System.out.println("repository: " + name);
-            System.out.println("url: " + page.url());
-            System.out.println("stars: " + stars);
-            System.out.println("-----------------------------------");
-        }
-    }
-}
-
-```
-
 ## 更多例程
 
 [更多例程](https://github.com/ryoii/hook/tree/master/example)
@@ -152,11 +106,6 @@ public class GithubTrending extends AutoDetectCrawler {
 |:---|
 |[体验正则探测](https://github.com/ryoii/hook/blob/master/example/RegexExample.java)|
 |[体验Page探测](https://github.com/ryoii/hook/blob/master/example/PageDetect.java)|
-
-|进阶爬虫|
-|:---|
-|[爬取豆瓣热门](https://github.com/ryoii/hook/blob/master/example/DoubanChart.java)|
-|[爬取Github趋势](https://github.com/ryoii/hook/blob/master/example/GithubTrending.java)|
 
 ## 展望
 

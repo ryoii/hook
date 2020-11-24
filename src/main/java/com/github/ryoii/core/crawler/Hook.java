@@ -236,9 +236,6 @@ public class Hook implements MetaSetter<Hook> {
         return this;
     }
 
-    /* Proxy */
-    private Proxies proxies = new Proxies();
-
     /**
      * Add a proxy for the crawler.
      * If more than one proxy is set, crawler will select one proxy randomly for each request.
@@ -248,7 +245,7 @@ public class Hook implements MetaSetter<Hook> {
      * @return Hook
      */
     public Hook proxy(String host, String port) {
-        proxies.add(host, port);
+        configuration.getProxies().add(host, port);
         return this;
     }
 
@@ -256,7 +253,7 @@ public class Hook implements MetaSetter<Hook> {
      * @see #proxy(String, String)
      */
     public Hook proxy(String host, int port) {
-        proxies.add(host, port);
+        configuration.getProxies().add(host, port);
         return this;
     }
 
@@ -264,7 +261,7 @@ public class Hook implements MetaSetter<Hook> {
      * @see #proxy(String, String)
      */
     public Hook proxy(Proxy proxy) {
-        proxies.add(proxy);
+        configuration.getProxies().add(proxy);
         return this;
     }
 
@@ -272,7 +269,7 @@ public class Hook implements MetaSetter<Hook> {
      * @see #proxy(String, String)
      */
     public Hook proxies(Proxy... proxies) {
-        this.proxies.addAll(proxies);
+        this.configuration.getProxies().addAll(proxies);
         return this;
     }
 
@@ -280,7 +277,7 @@ public class Hook implements MetaSetter<Hook> {
      * @see #proxy(String, String)
      */
     public Hook proxies(Collection<Proxy> proxies) {
-        this.proxies.addAll(proxies);
+        this.configuration.getProxies().addAll(proxies);
         return this;
     }
 

@@ -2,9 +2,7 @@ package com.github.ryoii.core.crawler;
 
 import com.github.ryoii.core.config.Configuration;
 import com.github.ryoii.core.model.*;
-import com.github.ryoii.core.proxy.Proxies;
 import com.github.ryoii.core.regex.RegexRules;
-import com.github.ryoii.core.requester.RequesterFactory;
 
 import java.net.Proxy;
 import java.net.http.HttpClient;

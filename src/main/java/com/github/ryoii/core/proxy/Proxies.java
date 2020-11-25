@@ -2,14 +2,14 @@ package com.github.ryoii.core.proxy;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Proxies {
 
-    private List<Proxy> proxies = new ArrayList<>();
+    private List<Proxy> proxies = new CopyOnWriteArrayList<>();
 
     public Proxies add(String host, String port) {
         return add(host, Integer.parseInt(port));

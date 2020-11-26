@@ -110,10 +110,11 @@ abstract class BaseCrawler implements Configurable {
         scheduler.addSeeds(filter.filter(seed));
     }
 
+    private CrawlerThread[] hookTasks = null;
     void start() {
         init();
 
-        CrawlerThread[] hookTasks = new CrawlerThread[configuration.getThreadNum()];
+        hookTasks = new CrawlerThread[configuration.getThreadNum()];
         latch = new CountDownLatch(configuration.getThreadNum());
 
         for (int i = 0; i < hookTasks.length; i++) {
@@ -132,6 +133,14 @@ abstract class BaseCrawler implements Configurable {
         if (conf().isPersistence()) {
             scheduler.persistence();
             filter.persistence();
+        }
+    }
+
+    public void close() {
+        if (hookTasks != null) {
+            for (CrawlerThread crawlerThread : hookTasks) {
+                crawlerThread.interrupt();
+            }
         }
     }
 

@@ -34,6 +34,10 @@ public class Proxies {
         return this;
     }
 
+    public void clear() {
+        this.proxies.clear();
+    }
+
     public int size() {
         return proxies.size();
     }

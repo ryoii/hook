@@ -263,6 +263,11 @@ public class Hook implements MetaSetter<Hook> {
         return this;
     }
 
+    public Hook proxy(String host) {
+        String[] s = host.split(":");
+        return proxy(s[0], s[1]);
+    }
+
     /**
      * @see #proxy(String, String)
      */
@@ -276,6 +281,11 @@ public class Hook implements MetaSetter<Hook> {
      */
     public Hook proxies(Collection<Proxy> proxies) {
         this.configuration.getProxies().addAll(proxies);
+        return this;
+    }
+
+    public Hook clearProxies() {
+        this.configuration.getProxies().clear();
         return this;
     }
 
@@ -364,13 +374,14 @@ public class Hook implements MetaSetter<Hook> {
         start(configuration.getThreadNum());
     }
 
+    private AutoDetectCrawler crawler = null;
     /**
      * Start the crawler.
      *
      * @param threadNum the thread num of the crawler
      */
     public void start(int threadNum) {
-        AutoDetectCrawler crawler = new AutoDetectCrawler(configuration) {
+        crawler = new AutoDetectCrawler(configuration) {
             @Override
             public void visit(Page page, AddOnlyTaskList tasks) {
                 visitHandler.accept(page, tasks);
@@ -378,6 +389,12 @@ public class Hook implements MetaSetter<Hook> {
         };
         crawler.setRegexRules(regexRules).setSeeds(seeds).conf().setThreadNum(threadNum);
         crawler.start();
+    }
+
+    public void close() {
+        if (crawler != null) {
+            crawler.close();
+        }
     }
 
     public static class SelectRule implements MetaSetter<SelectRule> {

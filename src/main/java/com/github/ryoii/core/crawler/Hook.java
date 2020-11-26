@@ -388,6 +388,7 @@ public class Hook implements MetaSetter<Hook> {
             }
         };
         crawler.setRegexRules(regexRules).setSeeds(seeds).conf().setThreadNum(threadNum);
+        seeds.forEach(s->s.setLife(configuration.getRetryTime()));
         crawler.start();
     }
 

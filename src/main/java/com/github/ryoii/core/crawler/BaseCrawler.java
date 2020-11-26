@@ -111,6 +111,7 @@ abstract class BaseCrawler implements Configurable {
     }
 
     private CrawlerThread[] hookTasks = null;
+    private Thread daemon = null;
     void start() {
         init();
 
@@ -122,13 +123,16 @@ abstract class BaseCrawler implements Configurable {
             hookTasks[i].start();
         }
 
-        new DaemonSafeStopThead(hookTasks).start();
+        daemon = new DaemonSafeStopThead(hookTasks);
+        daemon.start();
 
         try {
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        daemon.interrupt();
 
         if (conf().isPersistence()) {
             scheduler.persistence();
@@ -223,14 +227,18 @@ abstract class BaseCrawler implements Configurable {
         public void run() {
             Scanner scanner = new Scanner(System.in);
             String line;
-            while (true) {
-                line = scanner.nextLine();
-                if (!line.equalsIgnoreCase("q")) continue;
-                for (CrawlerThread crawlerThread : crawlerThreads) {
-                    crawlerThread.interrupt();
+            try {
+                while (true) {
+                    line = scanner.nextLine();
+                    if (!line.equalsIgnoreCase("q")) continue;
+                    for (CrawlerThread crawlerThread : crawlerThreads) {
+                        crawlerThread.interrupt();
+                    }
+                    logger.info("stop the crawler");
+                    break;
                 }
-                logger.info("stop the crawler");
-                break;
+            } catch (Exception e) {
+                logger.info("daemon thread stop safe");
             }
         }
     }
